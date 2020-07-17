@@ -248,8 +248,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         done; \
     done \
 \
+
+    && apt-get install git -y \
+    && git clone https://github.com/timescale/pg_prometheus.git \
+    && cd pg_prometheus \
+    && make \
+    && make install \
     # Remove unnecessary packages
-    && apt-get purge -y ${BUILD_PACKAGES} postgresql postgresql-server-dev-* libpq-dev=$PGVERSION* libmagic1 bsdmainutils \
+    && apt-get purge -y ${BUILD_PACKAGES} git postgresql postgresql-server-dev-* libpq-dev=$PGVERSION* libmagic1 bsdmainutils \
     && apt-get autoremove -y \
     && apt-get clean \
     && dpkg -l | grep '^rc' | awk '{print $2}' | xargs apt-get purge -y \
